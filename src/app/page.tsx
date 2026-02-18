@@ -406,7 +406,7 @@ export default function Dashboard() {
               </div>
             ) : (
               <p className="text-gray-500">
-                Click "Analyze" to calculate risk metrics
+                Click &quot;Analyze&quot; to calculate risk metrics
               </p>
             )}
           </div>
