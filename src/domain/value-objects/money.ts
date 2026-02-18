@@ -43,7 +43,11 @@ export class Money {
     if (this.currency !== other.currency) {
       throw new Error("Cannot subtract money with different currencies");
     }
-    return new Money(this.amount - other.amount, this.currency);
+    const result = this.amount - other.amount;
+    if (result < 0) {
+      throw new Error("Cannot subtract to create negative money amount");
+    }
+    return new Money(result, this.currency);
   }
 
   multiply(factor: number): Money {
