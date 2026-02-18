@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Trade {
+  id            String   @id @default(cuid())
+  symbol        String
+  side          String   // "LONG" | "SHORT"
+  
+  // Entry details
+  entryPrice    Float
+  stopLoss      Float
+  takeProfit    Float
+  positionSize  Float
+  leverage      Int      @default(1)
+  
+  // Risk metrics (calculated at creation)
+  riskAmount    Float
+  rewardAmount  Float
+  riskRewardRatio Float
+  liquidationPrice Float?
+  
+  // Status tracking
+  status        String   // "OPEN" | "CLOSED_TP" | "CLOSED_SL" | "CLOSED_MANUAL"
+  
+  // PnL (updated on close)
+  grossPnL      Float?
+  netPnL        Float?
+  
+  // Execution
+  executionMode String   @default("PAPER") // "PAPER" | "LIVE"
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  closedAt      DateTime?
+  
+  @@index([status])
+  @@index([createdAt])
+  @@index([symbol])
+}
